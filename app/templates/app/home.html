@@ -1,0 +1,32 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<p id="URL" style="display: none;">{{URL}}</p>
+<div id="lojas" class="row">
+        
+</div>
+
+<div class="row">
+    {% for loja in lojas %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body" style="min-height: 40vh;">
+                    <img src="{{URL}}{{loja.image}}" style="width:400px; height:200px;" class="img-thumbnail">
+                    <div class="card-title">
+                        <h1>{{loja.nome}}</h1>
+                        <p>Endereço: {{loja.endereco}}</p>
+                        <p>Telefone: {{loja.telefone}}</p>
+                    </div>
+                    <a href="{{URL}}/loja/{{loja.id}}" class="btn btn-success">Visitar</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}

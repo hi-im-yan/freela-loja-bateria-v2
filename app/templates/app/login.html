@@ -1,0 +1,53 @@
+{% extends 'app/base.html'%}
+
+{% block content %}
+<p id="URL" style="display: none;">{{URL}}</p>
+<div class="d-flex justify-content-center" style="margin-top: 30%;">
+    <div class="jumbotron" style="background-color: white;">
+        <h5>Apenas para Administradores</h5>
+        <div id="message" style="color: red;"></div>
+        <div class="form-group">
+            <input type="text" id="usuario" class="form-control" placeholder="Usuario">
+        </div>
+        <div class="form-group">
+            <input type="password" id="senha" class="form-control" placeholder="Senha">
+        </div>
+        
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-info" onclick="autenticar()">Login</button>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script >
+    url = document.getElementById('URL').innerText
+    function autenticar(){
+        usuario = document.getElementById('usuario').value
+        senha = document.getElementById('senha').value
+        
+        const data = { usuario: usuario, senha: senha , csrfmiddlewaretoken: '{{csrf_token}}'};
+
+        fetch(`${url}/api/authenticate`, {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status != 200)
+                document.getElementById('message').innerHTML = data.message
+            else
+                location.replace(`${url}/dashboard`)
+
+        })
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<p id="URL" style="display: none;">{{URL}}</p>
+<div class="jumbotron jumbotron-fluid">
+    <div class="row">
+        <div class="col-md">
+            <h1 class="display-4">{{items_loja.loja.nome}}</h1>
+        </div>
+        <div class="col-md">
+            <h5>Endereço: {{items_loja.loja.endereco}}</h5>
+            <h5>Telefone: {{items_loja.loja.telefone}}</h5>
+        </div>
+    </div>
+</div>
+
+<hr class="my-4">
+
+<div class="row">
+    {% for item in items_loja.items %}
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    <img src="{{URL}}{{item.image}}" style="width:400px; height:200px;" class="img-thumbnail">
+                    <div class="card-title">
+                        <h1 class="display-4">{{item.nome}}</h1>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p>Preço: R${{item.preco}}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
