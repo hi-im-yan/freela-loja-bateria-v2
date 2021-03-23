@@ -79,3 +79,6 @@ def autenticar(request):
             return JsonResponse({'status': 403, 'message': 'Usuário ou senha inválida'})
     else:
         pass
+
+def logout(request):
+    return redirect(os.environ.get('URL'))

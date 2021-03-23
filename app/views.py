@@ -43,7 +43,7 @@ def login(request):
     
     return render(request, 'app/login.html')
 
-@login_required
+@login_required(login_url=os.environ.get('URL') + 'login')
 def dashboard(request):
 
     return render(request, 'app/dashboard.html')
