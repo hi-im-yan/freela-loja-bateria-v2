@@ -3,15 +3,15 @@ from django.db import models
 # Create your models here.
 class Loja(models.Model):
     id = models.AutoField(primary_key=True)
-    nome = models.CharField(max_length=64)
-    endereco = models.CharField(max_length=256)
-    telefone = models.IntegerField(max_length=9)
-    image = models.FileField()
+    nome = models.CharField(max_length=156)
+    endereco = models.CharField(max_length=156)
+    telefone = models.CharField(max_length=16)
+    image = models.FileField(blank=True, null=True)
 
 class Item(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=64)
-    image = models.FileField()
+    image = models.FileField(blank=True, null=True)
 
 class Loja_Item(models.Model):
     id = models.AutoField(primary_key=True)
@@ -19,7 +19,3 @@ class Loja_Item(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     preco = models.FloatField()
 
-class Administrador(models.Model):
-    id = models.AutoField(primary_key=True)
-    usuario = models.CharField(max_length=124)
-    senha = models.CharField(max_length=124)

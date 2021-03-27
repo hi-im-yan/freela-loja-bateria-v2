@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 # from django.contrib import messages
@@ -82,3 +85,47 @@ def autenticar(request):
 
 def logout(request):
     return redirect(os.environ.get('URL'))
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def create_loja(request):
+
+    myfile = request.FILES['image']
+    fs = FileSystemStorage()
+    filename = fs.save(str(myfile), myfile)
+    uploaded_file_url = fs.url(filename)
+
+    info_data = {
+        'nome': request.data.get('nome'),
+        'endereco': request.data.get('endereco'),
+        'telefone': request.data.get('telefone')
+    }
+    
+
+    serializer = LojaSerializer(data=info_data)
+    if serializer.is_valid():
+        serializer.save(image=request.FILES['image'])
+        return redirect(os.environ.get('URL') + 'dashboard')
+
+
+    return Response(info_data)
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def create_item(request):
+    print(request.data)
+    return Response(request.data)
+
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def create_loja_item(request):
+    print(request.data)
+    return Response(request.data)
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def delete_loja(request):
+    print(request.data.get('loja_id'))
+    Loja.objects.filter(pk=request.data.get('loja_id')).delete()
+    return redirect(os.environ.get('URL') + 'dashboard')

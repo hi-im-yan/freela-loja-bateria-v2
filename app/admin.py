@@ -14,10 +14,8 @@ class ItemAdmin(admin.ModelAdmin):
 class Loja_ItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'loja', 'item', 'preco')
 
-class AdministradorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'usuario', 'senha')
+
     
 admin.site.register(Loja, LojaAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Loja_Item, Loja_ItemAdmin)
-admin.site.register(Administrador, AdministradorAdmin)

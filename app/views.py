@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+from .forms import *
+
 
 import os
 import requests
@@ -46,4 +48,13 @@ def login(request):
 @login_required(login_url=os.environ.get('URL') + 'login')
 def dashboard(request):
 
-    return render(request, 'app/dashboard.html')
+    url = str(os.environ.get('URL'))
+    res = requests.get(url + 'api/lojas')
+
+    context = {
+        'URL': url[:-1],
+        'loja_form': LojaForm(request.POST, request.FILES),
+        'lojas': res.json()
+
+    }
+    return render(request, 'app/dashboard.html', context)

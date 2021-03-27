@@ -15,8 +15,3 @@ class Loja_ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loja_Item
         fields = '__all__'
-
-class AdministradorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Administrador
-        fields = '__all__'
