@@ -58,3 +58,16 @@ def dashboard(request):
 
     }
     return render(request, 'app/dashboard.html', context)
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+def dashboard_items_loja(request, pk):
+
+    url = str(os.environ.get('URL'))
+    res = requests.get(url + 'api/loja/' + pk)
+
+    context = {
+        'URL': url[:-1],
+        'items_loja': res.json()
+
+    }
+    return render(request, 'app/dashboard_items_loja.html', context)

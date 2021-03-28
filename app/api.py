@@ -28,7 +28,7 @@ def routes(request):
 
 @api_view(['GET'])
 def get_lojas(request):
-    lojas = Loja.objects.all()
+    lojas = Loja.objects.filter(ativo=1)
     serializer = LojaSerializer(instance=lojas, many=True)
 
     return Response(serializer.data)
@@ -45,7 +45,7 @@ def get_items_loja(request, pk):
     loja = Loja.objects.get(id=pk)
     loja_serializer = LojaSerializer(instance=loja, many=False)
     
-    items_loja = Loja_Item.objects.filter(loja=loja)
+    items_loja = Loja_Item.objects.filter(loja=loja, loja_item_ativo=1)
     items_loja_serializer = Loja_ItemSerializer(instance=items_loja, many=True)
 
     list_items_loja = []
@@ -53,6 +53,7 @@ def get_items_loja(request, pk):
         temp_item = Item.objects.get(id=item['item'])
         temp_item_serializer = ItemSerializer(instance=temp_item, many=False)
         dict = {
+            'id': item['id'],
             'nome' : temp_item_serializer.data['nome'],
             'image' : temp_item_serializer.data['image'],
             'preco': item['preco']
@@ -98,7 +99,8 @@ def create_loja(request):
     info_data = {
         'nome': request.data.get('nome'),
         'endereco': request.data.get('endereco'),
-        'telefone': request.data.get('telefone')
+        'telefone': request.data.get('telefone'),
+        'ativo': 1
     }
     
 
@@ -120,12 +122,76 @@ def create_item(request):
 @login_required(login_url=os.environ.get('URL') + 'login')
 @api_view(['POST'])
 def create_loja_item(request):
-    print(request.data)
-    return Response(request.data)
+    loja = Loja.objects.get(pk=request.data['loja_id'])
+    produto = Item.objects.get(pk=request.data['produto_id'])
+
+    loja_item = Loja_Item()
+    loja_item.item = produto
+    loja_item.loja = loja
+    loja_item.loja_item_ativo = 1
+    loja_item.preco = float(request.data['preco'])
+    loja_item.save()
+
+    return redirect(os.environ.get('URL') + 'dashboard/loja/' + request.data['loja_id'])
+    # return Response(info_data)
 
 @login_required(login_url=os.environ.get('URL') + 'login')
 @api_view(['POST'])
 def delete_loja(request):
-    print(request.data.get('loja_id'))
-    Loja.objects.filter(pk=request.data.get('loja_id')).delete()
+    loja = Loja.objects.get(pk=request.data.get('loja_id'))
+    serializer = LojaSerializer(instance=loja)
+    serializer.update(instance=loja, validated_data={'ativo': 0})
     return redirect(os.environ.get('URL') + 'dashboard')
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def edit_loja(request):
+
+    if request.FILES:
+        myfile = request.FILES['image']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        uploaded_file_url = uploaded_file_url[7:]
+
+        info_data = {
+            'nome': request.data.get('nome'),
+            'endereco': request.data.get('endereco'),
+            'telefone': request.data.get('telefone'),
+            'image': uploaded_file_url
+        }
+    else:
+        info_data = {
+            'nome': request.data.get('nome'),
+            'endereco': request.data.get('endereco'),
+            'telefone': request.data.get('telefone'),
+        }
+
+    loja = Loja.objects.get(pk=request.data.get('loja_id'))
+    serializer = LojaSerializer(instance=loja)
+    serializer.update(instance=loja, validated_data=info_data)
+    
+    return redirect(os.environ.get('URL') + 'dashboard')
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def edit_loja_item(request):
+    loja_item = Loja_Item.objects.get(pk=request.data.get('item_loja_id'))
+    serializer = Loja_ItemSerializer(instance=loja_item, many=False)
+    data = {
+        'preco': request.data['preco']
+    }
+    serializer.update(instance=loja_item, validated_data=data)
+    
+    return redirect(os.environ.get('URL') + 'dashboard/loja/' + request.data['loja_id'])
+
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def delete_loja_item(request):
+
+    loja_item = Loja_Item.objects.get(pk=request.data.get('item_loja_id'))
+    serializer = Loja_ItemSerializer(instance=loja_item)
+    serializer.update(instance=loja_item, validated_data={'loja_item_ativo': 0})
+    
+    return redirect(os.environ.get('URL') + 'dashboard/loja/' + request.data['loja_id'])

@@ -6,13 +6,13 @@ def getFieldsModel(model):
     return [field.name for field in model._meta.get_fields()]
 
 class LojaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'endereco', 'telefone')
+    list_display = ('id', 'nome', 'endereco', 'telefone', 'ativo')
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome')
+    list_display = ('id', 'nome', 'ativo')
 
 class Loja_ItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'loja', 'item', 'preco')
+    list_display = ('id', 'loja', 'item', 'preco', 'loja_item_ativo')
 
 
     
