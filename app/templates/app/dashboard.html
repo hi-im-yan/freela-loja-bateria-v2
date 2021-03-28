@@ -22,7 +22,7 @@
             <td>{{loja.telefone}}</td>
             <td>
               <i onclick="abrir_modal_edit_loja({{loja}})" class="material-icons" data-toggle="tooltip" title="Editar" style="color: blue;">edit</i>
-              <i class="material-icons" data-toggle="tooltip" title="Produtos" style="color: green;">add_shopping_cart</i>
+              <i onclick="redireciona_crud_items({{loja}})" class="material-icons" data-toggle="tooltip" title="Produtos" style="color: green;">add_shopping_cart</i>
               <i onclick="abrir_modal_delete_loja({{loja}})" class="material-icons" data-toggle="tooltip" title="Deletar" style="color: red;">delete</i>
             </td>
           </tr>
@@ -147,6 +147,11 @@
       document.getElementById('modal_editar_loja_telefone').setAttribute('value', loja.telefone)
       document.getElementById('modal_editar_loja_id').setAttribute('value', loja.id)
       
+    }
+
+    function redireciona_crud_items(loja){
+      console.log('alo')
+      window.location.href = `{{URL}}/dashboard/loja/${loja.id}`
     }
 </script>
 {% endblock %}

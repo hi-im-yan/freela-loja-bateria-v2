@@ -1,0 +1,131 @@
+{% extends 'app/dash_base.html' %}
+
+{% block content %}
+<div id="display_items" class="table-responsive" style="display: inline;">        
+    <table class="table table-hover table-bordered">
+        <caption>Produtos</caption>
+        <thead>
+            <tr>
+                <th scope="col">Foto</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody >
+            {% for item in items %}
+            <tr>
+                <td><img src="{{URL}}{{item.image}}" style="width: 85px; height: 85px;"></td>
+                <td>{{item.nome}}</td>
+                <td>
+                    <i onclick="abrir_modal_edit_item({{item}})" class="material-icons" data-toggle="tooltip" title="Editar" style="color: blue;">edit</i>
+                    <i onclick="abrir_modal_delete_item({{item}})" class="material-icons" data-toggle="tooltip" title="Deletar" style="color: red;">delete</i>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_item">Adicionar</button>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal_create_item">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Criar Produto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{URL}}/api/criar/item" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder='Nome do Produto' name='nome'>
+            </div>
+            <div class="form-group">
+                Foto:
+                <input type="file" placeholder='Imagem' name='image' accept="image/png, image/jpeg">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default btn-success" type="submit">Confirmar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          </div>
+        </form> 
+      </div>   
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal_edit_item">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Produto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{URL}}/api/edit/item" method="POST">
+          <div class="modal-body">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" id="modal_editar_item" class="form-control" name='nome'>
+            </div>
+            <div class="form-group">
+                Foto:
+                <input type="file" placeholder='Imagem' name='image' accept="image/png, image/jpeg">
+            </div>
+            <input type="hidden" id="modal_editar_item_id" name="item_id">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default btn-success" type="submit">Confirmar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          </div>
+        </form> 
+      </div>   
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal_delete_item">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Deletar Produto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{URL}}/api/delete/item" method="POST">
+          <div class="modal-body">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" id="modal_deletar_item" disabled class="form-control" name='nome'>
+            </div>
+            <input type="hidden" id="modal_deletar_item_id" name="item_id"">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default btn-success" type="submit">Confirmar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          </div>
+        </form> 
+      </div>   
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    function abrir_modal_edit_item(item){
+      $('#modal_edit_item').modal('show')
+      document.getElementById('modal_editar_item').setAttribute('value', item.nome)
+      document.getElementById('modal_editar_item_id').setAttribute('value', item.id)
+    }
+
+    function abrir_modal_delete_item(item){
+      $('#modal_delete_item').modal('show')
+      document.getElementById('modal_deletar_item').setAttribute('value', item.nome)
+      document.getElementById('modal_deletar_item_id').setAttribute('value', item.id)
+    }
+</script>
+{% endblock %}

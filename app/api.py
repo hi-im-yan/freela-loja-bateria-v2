@@ -35,7 +35,7 @@ def get_lojas(request):
 
 @api_view(['GET'])
 def get_items(request):
-    items = Item.objects.all()
+    items = Item.objects.filter(ativo=1)
     serializer = ItemSerializer(instance=items, many=True)
 
     return Response(serializer.data)
@@ -90,12 +90,6 @@ def logout(request):
 @login_required(login_url=os.environ.get('URL') + 'login')
 @api_view(['POST'])
 def create_loja(request):
-
-    myfile = request.FILES['image']
-    fs = FileSystemStorage()
-    filename = fs.save(str(myfile), myfile)
-    uploaded_file_url = fs.url(filename)
-
     info_data = {
         'nome': request.data.get('nome'),
         'endereco': request.data.get('endereco'),
@@ -115,8 +109,39 @@ def create_loja(request):
 @login_required(login_url=os.environ.get('URL') + 'login')
 @api_view(['POST'])
 def create_item(request):
-    print(request.data)
-    return Response(request.data)
+    info_data = {
+        'nome': request.data.get('nome'),
+        'ativo': 1
+    }
+
+    serializer = ItemSerializer(data=info_data)
+    if serializer.is_valid():
+        serializer.save(image=request.FILES['image'])
+        return redirect(os.environ.get('URL') + 'dashboard/items')
+    return Response({'teste':'teste'})
+
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def edit_item(request):
+
+    item = Item.objects.get(pk=request.data.get('item_id'))
+    
+    data = {
+        'nome': request.data.get('nome'),
+        'image': request.data.get('image')
+    }
+
+    serializer = ItemSerializer(instance=item, many=False)
+    serializer.update(instance=item, validated_data=data)
+    return redirect(os.environ.get('URL') + 'dashboard/items')
+
+@login_required(login_url=os.environ.get('URL') + 'login')
+@api_view(['POST'])
+def delete_item(request):
+
+    item = Item.objects.filter(pk=request.data.get('item_id')).delete()
+    return redirect(os.environ.get('URL') + 'dashboard/items')
 
 
 @login_required(login_url=os.environ.get('URL') + 'login')
