@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .forms import *
@@ -42,7 +42,9 @@ def loja_items(request, pk):
     return render(request, 'app/items_loja.html', context)
 
 def login(request):
-    
+
+    if request.user.is_authenticated:
+        return redirect(os.environ.get('URL') + 'dashboard')
     return render(request, 'app/login.html')
 
 @login_required(login_url=os.environ.get('URL') + 'login')

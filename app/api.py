@@ -84,7 +84,8 @@ def autenticar(request):
     else:
         pass
 
-def logout(request):
+def user_logout(request):
+    logout(request)
     return redirect(os.environ.get('URL'))
 
 @login_required(login_url=os.environ.get('URL') + 'login')
@@ -126,11 +127,15 @@ def create_item(request):
 def edit_item(request):
 
     item = Item.objects.get(pk=request.data.get('item_id'))
-    
-    data = {
-        'nome': request.data.get('nome'),
-        'image': request.data.get('image')
-    }
+    if request.data.get('image'):
+        data = {
+            'nome': request.data.get('nome'),
+            'image': request.data.get('image')
+        }
+    else:
+        data = {
+            'nome': request.data.get('nome')
+        }
 
     serializer = ItemSerializer(instance=item, many=False)
     serializer.update(instance=item, validated_data=data)

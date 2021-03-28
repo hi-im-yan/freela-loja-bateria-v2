@@ -40,11 +40,11 @@
           <div class="modal-body">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" class="form-control" placeholder='Nome do Produto' name='nome'>
+                <input required type="text" class="form-control" placeholder='Nome do Produto' name='nome'>
             </div>
             <div class="form-group">
                 Foto:
-                <input type="file" placeholder='Imagem' name='image' accept="image/png, image/jpeg">
+                <input required type="file" placeholder='Imagem' name='image' accept="image/png, image/jpeg">
             </div>
           </div>
           <div class="modal-footer">
@@ -69,7 +69,7 @@
           <div class="modal-body">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" id="modal_editar_item" class="form-control" name='nome'>
+                <input required type="text" id="modal_editar_item" class="form-control" name='nome'>
             </div>
             <div class="form-group">
                 Foto:

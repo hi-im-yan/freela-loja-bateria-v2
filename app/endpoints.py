@@ -8,7 +8,7 @@ urlpatterns = [
     path('items', api.get_items, name='get_items'),
     path('loja/<str:pk>', api.get_items_loja, name='get_items_loja'),
     path('authenticate', api.autenticar, name='authenticate'),
-    path('logout', api.logout, name='logout'),
+    path('logout', api.user_logout, name='user_logout'),
     
     path('criar/item', api.create_item, name='create_item'),
     path('delete/item', api.delete_item, name='delete_item'),

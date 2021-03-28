@@ -1,0 +1,1 @@
+web: gunicorn freela_loja_bateria.wsgi

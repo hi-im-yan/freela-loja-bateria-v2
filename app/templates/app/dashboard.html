@@ -45,17 +45,17 @@
           <div class="modal-body">
             {% csrf_token %}
             <div class="form-group">
-              <input type="text" class="form-control" placeholder='Nome da Loja' name='nome'>
+              <input required type="text" class="form-control" placeholder='Nome da Loja' name='nome'>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder='Endereço' name='endereco'>
+              <input required type="text" class="form-control" placeholder='Endereço' name='endereco'>
             </div>
             <div class="form-group">
-              <input type="number" class="form-control" placeholder='Telefone' name='telefone'>
+              <input required type="number" class="form-control" placeholder='Telefone' name='telefone'>
             </div>
             <div class="form-group">
               Foto:
-              <input type="file" placeholder='Imagem' name='image' accept="image/png, image/jpeg">
+              <input required type="file" placeholder='Imagem' name='image' accept="image/png, image/jpeg">
             </div>
           </div>
           <div class="modal-footer">
@@ -80,13 +80,13 @@
           <div class="modal-body">
             {% csrf_token %}
             <div class="form-group">
-              <input id="modal_editar_loja_nome" type="text" class="form-control" placeholder='Nome da Loja' name='nome'>
+              <input required id="modal_editar_loja_nome" type="text" class="form-control" placeholder='Nome da Loja' name='nome'>
             </div>
             <div class="form-group">
-              <input id="modal_editar_loja_endereco" type="text" class="form-control" placeholder='Endereço' name='endereco'>
+              <input required id="modal_editar_loja_endereco" type="text" class="form-control" placeholder='Endereço' name='endereco'>
             </div>
             <div class="form-group">
-              <input id="modal_editar_loja_telefone" type="number" class="form-control" placeholder='Telefone' name='telefone'>
+              <input required id="modal_editar_loja_telefone" type="number" class="form-control" placeholder='Telefone' name='telefone'>
             </div>
             <div class="form-group">
               Foto:
