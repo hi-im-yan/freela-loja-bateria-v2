@@ -27,7 +27,7 @@ def items(request):
         'items': res.json()
     }
 
-    return render(request, 'app/items.html', context)
+    return render(request, 'app/home.html', context)
 
 
 def loja_items(request, pk):
