@@ -196,7 +196,7 @@ def edit_loja(request):
             'nome': request.data.get('nome'),
             'endereco': request.data.get('endereco'),
             'telefone': request.data.get('telefone'),
-            'image': uploaded_file_url
+            'image': myfile
         }
     else:
         info_data = {
