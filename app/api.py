@@ -135,17 +135,18 @@ def create_item(request):
 def edit_item(request):
 
     item = Item.objects.get(pk=request.data.get('item_id'))
+    
     if request.data.get('image'):
         data = {
             'nome': request.data.get('nome'),
-            'image': request.FILES['image']
+            'image': request.data.get('image')
         }
     else:
         data = {
             'nome': request.data.get('nome')
         }
 
-    serializer = ItemSerializer(instance=item, many=False)
+    serializer = ItemSerializer(instance=item)
     serializer.update(instance=item, validated_data=data)
     return redirect(os.environ.get('URL') + 'dashboard/items')
 

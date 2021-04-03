@@ -65,7 +65,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{URL}}/api/edit/item" method="POST">
+        <form action="{{URL}}/api/edit/item" method="POST" enctype="multipart/form-data">
           <div class="modal-body">
             {% csrf_token %}
             <div class="form-group">
