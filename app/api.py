@@ -138,7 +138,7 @@ def edit_item(request):
     if request.data.get('image'):
         data = {
             'nome': request.data.get('nome'),
-            'image': request.data.get('image')
+            'image': request.FILES['image']
         }
     else:
         data = {
