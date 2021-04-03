@@ -97,11 +97,19 @@ def create_loja(request):
         'telefone': request.data.get('telefone'),
         'ativo': 1
     }
-    
+    print("=> " + str(request.FILES['image']))
 
     serializer = LojaSerializer(data=info_data)
     if serializer.is_valid():
         serializer.save(image=request.FILES['image'])
+    # b = Loja(
+    #     nome=request.data.get('nome'),
+    #     endereco=request.data.get('endereco'),
+    #     telefone=request.data.get('telefone'),
+    #     ativo=1,
+    #     image=request.FILES['image']
+    # )
+    # b.save()
         return redirect(os.environ.get('URL') + 'dashboard')
 
 

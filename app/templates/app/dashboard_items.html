@@ -14,7 +14,7 @@
         <tbody >
             {% for item in items %}
             <tr>
-                <td><img src="{{URL}}{{item.image}}" style="width: 85px; height: 85px;"></td>
+                <td><img src="{{item.image}}" style="width: 85px; height: 85px;"></td>
                 <td>{{item.nome}}</td>
                 <td>
                     <i onclick="abrir_modal_edit_item({{item}})" class="material-icons" data-toggle="tooltip" title="Editar" style="color: blue;">edit</i>
